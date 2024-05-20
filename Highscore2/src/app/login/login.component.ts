@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   Validators,
+  NgForm,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -11,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { merge } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-login',
@@ -22,11 +24,18 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatIconModule,
     MatButtonModule,
+    MatDividerModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  test1 = 'test1';
+  test2 = 'test2';
+  onSubmit(loginForm: NgForm) {
+    console.log(loginForm.value);
+  }
+
   hide = true;
 
   email = new FormControl('', [Validators.required, Validators.email]);
