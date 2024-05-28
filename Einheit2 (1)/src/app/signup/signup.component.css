@@ -7,3 +7,8 @@ mat-form-field {
 button {
   margin-left: 50px;
 }
+
+mat-error {
+  margin-left: 50px;
+  margin-bottom: 10px;
+}
