@@ -1,0 +1,29 @@
+# Software-Plan für die Highscore-Applikation
+## Komponenten
+1. Frontend:
+    - Angular-Anwendung mit Komponenten für Login, Registrierung und Anzeige der Highscores.
+2. Backend:
+    - Node.js mit Express zur Handhabung von API-Anfragen und -Antworten.
+3. Datenbank:
+    - MongoDB zur Speicherung von Benutzerdaten und Highscores.
+
+## Datenfluss
+- Der Benutzer registriert sich über das Frontend.
+- Registrierungsdaten werden über eine POST-Anfrage an das Backend gesendet.
+- Das Backend validiert die Daten und speichert sie in MongoDB.
+- Der Benutzer loggt sich über das Frontend ein.
+- Login-Daten werden über eine POST-Anfrage an das Backend gesendet.
+- Das Backend authentifiziert den Benutzer und gibt eine ID zurück.
+- Der Benutzer greift über das Frontend auf die Highscores zu.
+- Highscore-Daten werden aus MongoDB abgerufen und über eine GET-Anfrage an das Frontend gesendet.
+
+## Technologien
+- Angular für die Frontend-Entwicklung.
+- Node.js und Express für die Backend-Entwicklung.
+- MongoDB zur Datenspeicherung.
+
+## Kommunikation
+- Das Frontend kommuniziert mit dem Backend über eine RESTful API.
+- Das Backend interagiert mit MongoDB für Datenoperationen.
+
+
