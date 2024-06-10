@@ -1,6 +1,6 @@
 <mat-card>
     <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <form *ngIf="!isLoading" (ngSubmit)="login()" [formGroup]="signupForm">
+    <form *ngIf="!isLoading" (ngSubmit)="signup()" [formGroup]="signupForm">
       <div id="userData">
         <mat-form-field appearance="fill">
           <mat-label>Enter your username (must be an email)</mat-label>
@@ -91,15 +91,15 @@
         <div id="address">
           <mat-form-field appearance="fill">
             <mat-label>Address</mat-label>
-            <textarea matInput></textarea>
+            <textarea matInput formControlName="address"></textarea>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>City</mat-label>
-            <input matInput type="text" placeholder="City" />
+            <input matInput type="text" placeholder="City" formControlName="city"/>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>Zip Code</mat-label>
-            <input matInput type="number" placeholder="Zip-code" />
+            <input matInput type="number" placeholder="Zip-code" formControlName="zipCode" />
           </mat-form-field>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendService } from '../backend.service';
 
 import {
   Validators,
@@ -9,6 +10,7 @@ import {
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -48,19 +50,26 @@ export class SignupComponent {
         Validators.required,
         Validators.minLength(8),
       ]),
+      city: new FormControl([Validators.required]),
+      address: new FormControl([Validators.required]),
+      zipCode: new FormControl([Validators.required]),
     },
     { validators: this.passwordMatchValidator }
   );
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private backendService: BackendService) { }
 
   ngOnInit(): void {}
 
-  login() {
+  signup() {
     const emailControl = this.signupForm.get('email');
     const password1Control = this.signupForm.get('password1');
     const password2Control = this.signupForm.get('password2');
+    const addressControl = this.signupForm.get('address');
+    const cityControl = this.signupForm.get('city');
+    const zipCodeControl = this.signupForm.get('zipCode');
 
+   
     if (
       emailControl?.errors?.['required'] ||
       password1Control?.errors?.['required'] ||
@@ -73,10 +82,19 @@ export class SignupComponent {
 
     if (this.signupForm.valid) {
       this.isLoading = true;
-      console.log('Login successful.');
+      console.log('Signup successful.');
       this.signupFailed = false;
+      console.log(this.form["email"].value);
+      console.log(this.form["zipCode"].value);
+      this.backendService.signup(
+      this.form["email"].value, 
+      this.form["password"].value,
+      this.form["address"].value,
+      this.form["city"].value,
+      this.form["zipCode"].value);
+      
     } else {
-      console.log('Login failed.');
+      console.log('Signup failed.');
       this.signupFailed = true;
     }
   }
