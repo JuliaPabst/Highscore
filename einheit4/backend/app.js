@@ -23,7 +23,38 @@ app.get("/", (req, res) => {
     res.status(200).json(tokenData);
 });
 
-app.post("/login", (req, res) => {
+
+app.post("/users", (req, res) => {
+    // Übergebene Daten loggen
+    console.log(req.body);
+
+    const { email, password, address, city, zipCode } = req.body;
+    if (!email || !password || !address || !city || !zipCode) {
+        res.status(400).send("Email, password, address, city, and zip code are required");
+        return;
+    }
+
+    if (userData[email]) {
+        res.status(409).send("User already exists");
+        return;
+    }
+
+    userData[email] = { password, address, city, zipCode };
+    
+    const token = (Math.random() + 1).toString(36).substring(2);
+
+    // Token in der Token-Datenbank speichern
+    tokenData[email] = token;
+
+    // Erfolgsmeldung mit dem Token zurückgeben
+    res.status(201).json({
+        message: "User created successfully",
+        token: token
+    });
+
+});
+
+app.post("/sessions", (req, res) => {
     // Übergebene Daten loggen
     console.log(req.body);
 
