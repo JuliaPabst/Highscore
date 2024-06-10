@@ -47,5 +47,28 @@ app.post("/login", (req, res) => {
     }
 });
 
+app.post("/users", (req, res) => {
+    // Übergebene Daten loggen
+    console.log(req.body);
+
+    const { email, password, address, city, zipCode } = req.body;
+    if (!email || !password) {
+        res.status(400).send("Email and password are required");
+        return;
+    }
+
+    if (userData[email]) {
+        res.status(409).send("User already exists");
+        return;
+    }
+
+    userData[email] = password;
+    
+    res.status(200).send("User created successfully");
+
+});
+
+
+
 module.exports = app;
 
