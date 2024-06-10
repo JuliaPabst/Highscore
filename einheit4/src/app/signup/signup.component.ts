@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BackendService } from '../backend.service';
+
 import {
   Validators,
   FormGroup,
@@ -15,9 +15,7 @@ import {
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
-export class SignupComponent implements OnInit {
-  constructor(private fb: FormBuilder, private backendService: BackendService) {}
-
+export class SignupComponent {
   passwordMatchValidator: ValidatorFn = (
     control: AbstractControl
   ): ValidationErrors | null => {
@@ -29,65 +27,58 @@ export class SignupComponent implements OnInit {
       : null;
   };
 
+  email = '';
+  password1 = '';
+  password2 = '';
   hide = true;
   isLoading = false;
   signupFailed = false;
   signupForm: FormGroup = this.fb.group(
     {
-      email: new FormControl('', [
+      email: new FormControl(this.email, [
         Validators.required,
         Validators.minLength(4),
         Validators.email,
       ]),
-      password1: new FormControl('', [
+      password1: new FormControl(this.password1, [
         Validators.required,
         Validators.minLength(8),
       ]),
-      password2: new FormControl('', [
+      password2: new FormControl(this.password2, [
         Validators.required,
         Validators.minLength(8),
       ]),
-      address: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
-      zipCode: new FormControl('', Validators.required)
     },
     { validators: this.passwordMatchValidator }
   );
 
+  constructor(private fb: FormBuilder) {}
+
   ngOnInit(): void {}
 
-  signup(): void {
-    if (this.signupForm.invalid) {
+  login() {
+    const emailControl = this.signupForm.get('email');
+    const password1Control = this.signupForm.get('password1');
+    const password2Control = this.signupForm.get('password2');
+
+    if (
+      emailControl?.errors?.['required'] ||
+      password1Control?.errors?.['required'] ||
+      password2Control?.errors?.['required']
+    ) {
       this.signupFailed = true;
-      return;
+    } else {
+      this.signupFailed = false;
     }
 
-    this.isLoading = true;
-    console.log('Signup successful.');
-    this.signupFailed = false;
-
-    const formData = this.signupForm.value;
-
-    this.backendService.signup(formData).subscribe(
-      response => {
-        console.log('Signup response:', response);
-        this.isLoading = false;
-        // Handle successful signup (e.g., redirect to login page)
-      },
-      error => {
-        console.error('Signup error:', error);
-        if (error.status === 409) {
-          this.signupFailed = true;
-          // Handle user already exists case
-          alert('User already exists. Please use a different email.');
-        } else {
-          this.signupFailed = true;
-          // Handle other errors
-          alert('An error occurred. Please try again.');
-        }
-        this.isLoading = false;
-      }
-    );
+    if (this.signupForm.valid) {
+      this.isLoading = true;
+      console.log('Login successful.');
+      this.signupFailed = false;
+    } else {
+      console.log('Login failed.');
+      this.signupFailed = true;
+    }
   }
 
   get form(): { [key: string]: AbstractControl } {

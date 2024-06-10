@@ -6,4 +6,3 @@ app.set("port", port);
 
 const server = http.createServer(app);
 server.listen(port);
-console.log("server started on port 3000");
