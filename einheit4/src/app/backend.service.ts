@@ -20,7 +20,7 @@ export class BackendService {
   }
 
   signup(email: string, password: string, address: string, city: string, zipCode: string) {
-    this.http.post<{ Token: string }>('http://localhost:3000/sessions', { "email": email, "password": password, address: address, city: city, zipCode: zipCode }, this.httpOptions)
+    this.http.post<{ Token: string }>('http://localhost:3000/users', { "email": email, "password": password, "address": address, "city": city, "zipCode": zipCode }, this.httpOptions)
       .subscribe((responseData) => {
         console.log(responseData.Token);
       });
