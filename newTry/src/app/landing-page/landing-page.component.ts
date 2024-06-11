@@ -21,7 +21,7 @@ export class LandingPageComponent {
   }
 
   logout() {
-    this.backendService.logout
+    this.backendService.logout();
 
   }
 

@@ -1,6 +1,7 @@
 .highscore-table {
     width: 100%;
     border-collapse: collapse;
+    margin: 5px;
   }
   
   .highscore-table th, .highscore-table td {
