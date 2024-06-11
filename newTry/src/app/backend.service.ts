@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-//brauhct http client, http headers, sind injections
-//einmal definiert für backendaufruf
-//sonst braucht es jede komponente
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +10,12 @@ export class BackendService {
   constructor(private http: HttpClient, private router: Router) { }
 
   httpOptions = {
-    //einmal definiert
-    //wiederverwendbar
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   login(email: string, password: string) {
-    //wo liegt service
-    //Token string: was soll zurückkommen, es soll ein token string kommen
     this.http.post<{ Token: string }>('http://localhost:3000/sessions', { "email": email, "password": password }, this.httpOptions)
-    //subscribe: erfolgsfall  
+
     .subscribe((responseData) => {
         console.log(responseData.Token);
         localStorage.setItem('token', responseData.Token);
@@ -31,7 +24,7 @@ export class BackendService {
   }
 
   getHighScores() {
-    return this.http.get<any[]>('http://localhost:3000/highscores', this.httpOptions);
+    return this.http.get<any[]>(`http://localhost:3000/highscores`, this.httpOptions);
   }
 
   signup(email: string, password: string, address: string, city: string, zipCode: string) {
@@ -70,7 +63,7 @@ export class BackendService {
         () => {
           console.log('Logged out successfully');
           localStorage.removeItem('token');
-          this.router.navigate(['/login']); // or wherever you want to redirect after logout
+          this.router.navigate(['/login']); 
         },
         (error) => {
           console.error('Error logging out:', error);

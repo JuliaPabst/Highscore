@@ -1,0 +1,26 @@
+.highscore-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .highscore-table th, .highscore-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .highscore-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
+  .highscore-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .highscore-table tr:hover {
+    background-color: #ddd;
+  }
+  

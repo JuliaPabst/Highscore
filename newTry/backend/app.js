@@ -73,8 +73,9 @@ app.post("/highscores", (req, res) => {
 });
 
 app.get("/highscores", (req, res) => {
-    // get Highscores from in-memory-database
-    const highscores = highScore.map(entry => ({ username: entry.username, highscore: entry.score }));
+    const highscores = highScore.map(entry => ({ username: entry.username, highscore: entry.highscore }));
+    console.log(highscores);
+    
     res.status(200).json(highscores);
 });
 

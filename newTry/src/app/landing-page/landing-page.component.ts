@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { BackendService } from '../backend.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -12,7 +13,7 @@ export class LandingPageComponent {
 
   highscoreForm!: FormGroup; // Use non-null assertion operator
 
-  constructor(private fb: FormBuilder, private backendService: BackendService) {
+  constructor(private fb: FormBuilder, private backendService: BackendService, private router: Router) {
     this.highscoreForm = this.fb.group({
       highscore: ['', Validators.required],
       username: ['', Validators.required]
@@ -23,13 +24,9 @@ export class LandingPageComponent {
     this.backendService.logout
 
   }
-  getHighScores() {
-    this.backendService.getHighScores().subscribe(
-      (highscores) => {
-        this.highscores = highscores;
-      },
 
-    )
+  getHighScores() {
+    this.router.navigate(['/highscores']);
   }
 
   sendHighscore(): void {
