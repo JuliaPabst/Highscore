@@ -34,8 +34,8 @@ export class BackendService {
     return this.http.get<any[]>('http://localhost:3000/highscores', this.httpOptions);
   }
 
-  signup(email: string, password: string, street: string, city: string, postalCode: string) {
-    this.http.post<{ message: string }>('http://localhost:3000/users', { email, password, street, city, postalCode }, this.httpOptions)
+  signup(email: string, password: string, street: string, city: string, zipCode: string) {
+    this.http.post<{ message: string }>('http://localhost:3000/users', { email, password, street, city, zipCode }, this.httpOptions)
       .subscribe(
         (response) => {
           console.log(response.message);

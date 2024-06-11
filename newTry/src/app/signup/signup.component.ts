@@ -18,6 +18,8 @@ import { zip } from 'rxjs';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
+  constructor(private fb: FormBuilder, private backendService: BackendService) { }
+
   passwordMatchValidator: ValidatorFn = (
     control: AbstractControl
   ): ValidationErrors | null => {
@@ -50,14 +52,15 @@ export class SignupComponent {
         Validators.required,
         Validators.minLength(8),
       ]),
-      city: new FormControl('', Validators.required),
-      address: new FormControl('', Validators.required),
-      zipCode: new FormControl('', Validators.required),
+      city: new FormControl("", [
+      ]),
+      address: new FormControl("", [
+      ]),
+      zipCode: new FormControl("", [Validators.pattern('^[0-9]{4}$')
+      ]),
     },
     { validators: this.passwordMatchValidator }
   );
-
-  constructor(private fb: FormBuilder, private backendService: BackendService) { }
 
   ngOnInit(): void {}
 
@@ -97,7 +100,7 @@ export class SignupComponent {
     }
   }
 
-  get form(): { [key: string]: AbstractControl } {
+  get form(): { [key: string]: AbstractControl; } {
     return this.signupForm.controls;
   }
 
