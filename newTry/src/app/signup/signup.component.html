@@ -1,57 +1,112 @@
 <mat-card>
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <!-- formGroup mit ts verbunden-->
-    <form *ngIf="!isLoading" (ngSubmit)='signup()' [formGroup]="signupForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form *ngIf="!isLoading" (ngSubmit)="signup()" [formGroup]="signupForm">
+    <div id="userData">
       <mat-form-field appearance="fill">
-        <mat-label>Enter your email</mat-label><!-- formControlName ist Verweis zu ts, wo man es im html findet-->
-        <input matInput type="email" placeholder="E-Mail" formControlName="email"  />
-        <!--geht mehrere Validatoren-->
-        <mat-error *ngIf="form['email']?.errors?.['required']">Please enter valid email.</mat-error>
-        <mat-error *ngIf="form['email']?.errors?.['minlength']">Minimal length is 4.</mat-error>
-        <mat-error *ngIf="form['email']?.errors?.['email']">Username must be an email.</mat-error>
+        <mat-label>Enter your username (must be an email)</mat-label>
+        <input
+          matInput
+          type="email"
+          placeholder="email"
+          formControlName="email"
+        />
+        <mat-error *ngIf="form['email']?.errors?.['required']"
+          >Please enter valid email.</mat-error
+        >
+        <mat-error *ngIf="form['email']?.errors?.['minlength']"
+          >Mininal length is 4.</mat-error
+        >
+        <mat-error *ngIf="form['email']?.errors?.['email']"
+          >Enter an email.</mat-error
+        >
+        <mat-error *ngIf="form['email']?.errors?.['pattern']"
+          >Not the right username.</mat-error
+        >
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Enter your password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password"  formControlName="password"/>
-        <mat-error *ngIf="form['password']?.errors?.['required']">Please enter valid password.</mat-error>
-        <mat-error *ngIf="form['password']?.errors?.['minlength']">Minimal length is 8.</mat-error>
-        <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide">
-        
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          placeholder="Password"
+          formControlName="password1"
+        />
+        <button
+          mat-icon-button
+          type="button"
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{
+            hide ? "visibility_off" : "visibility"
+          }}</mat-icon></button
+        ><mat-error *ngIf="form['password1']?.errors?.['required']"
+          >Please enter a password.</mat-error
+        ><mat-error *ngIf="form['password1']?.errors?.['minlength']"
+          >Password is too short.</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Repeat your password</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          placeholder="Password"
+          formControlName="password2"
+        />
+        <button
+          mat-icon-button
+          type="button"
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </button>
+        <mat-error *ngIf="form['password2']?.errors?.['required']"
+          >Please enter a password.</mat-error
+        >
+        <mat-error *ngIf="form['password2']?.errors?.['minlength']"
+          >Password is too short.</mat-error
+        >
       </mat-form-field>
+      <mat-error *ngIf="signupForm.hasError('passwordMismatch')"
+        >Passwords are not the same.</mat-error
+      >
+    </div>
+    <div id="registration-data">
       <mat-form-field appearance="fill">
-        <mat-label>Enter your password again</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="confirmPassword"/>
-        <mat-error *ngIf="form['confirmPassword']?.errors?.['required']">Please enter valid password.</mat-error>
-        <mat-error *ngIf="form['confirmPassword']?.errors?.['minlength']">Minimal length is 8.</mat-error>
-        <mat-error *ngIf="form['confirmPassword']?.errors?.['mustMatch']">Must match Password.</mat-error>
-        <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
+        <mat-label>Enter your Company</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Company"
+          value="FH Technikum Wien"
+          disabled
+        />
       </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Company</mat-label>
-        <input matInput type="text" placeholder="FH Technikum" formControlName="company"  readonly />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Street</mat-label>
-        <input matInput type="text" formControlName="street" />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>City</mat-label>
-        <input matInput type="text" formControlName="city"  />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Postal Code</mat-label>
-        <input matInput type="text" formControlName="postalCode" />
-        <mat-error *ngIf="form['postalCode']?.errors?.['pattern']">Please enter a four digit postal code.</mat-error>
-      </mat-form-field>
-      
-      
-      
-      <button mat-raised-button color="primary" type="submit">Register</button>
-    </form>
-  </mat-card>
+      <div id="address">
+        <mat-form-field appearance="fill">
+          <mat-label>Address</mat-label>
+          <textarea matInput formControlName="address"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>City</mat-label>
+          <input matInput type="text" placeholder="City" formControlName="city"/>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Zip Code</mat-label>
+          <input matInput type="number" placeholder="Zip-code" formControlName="zipCode" />
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-error *ngIf="signupFailed"
+      >Sign up failed. There might be a problem with your username or your
+      password!</mat-error
+    >
+    <button mat-raised-button color="primary" type="submit">Sign up</button>
+  </form>
+</mat-card>

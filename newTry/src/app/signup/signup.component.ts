@@ -1,85 +1,107 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl, FormBuilder, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { BackendService } from '../backend.service';
 
+import {
+  Validators,
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
 })
+export class SignupComponent {
+  passwordMatchValidator: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    const password1 = control.get('password1');
+    const password2 = control.get('password2');
 
-export class SignupComponent implements OnInit {
+    return password1 && password2 && password1.value !== password2.value
+      ? { passwordMismatch: true }
+      : null;
+  };
+
+  email = '';
+  password1 = '';
+  password2 = '';
   hide = true;
   isLoading = false;
-  signupForm: FormGroup;
-
-  constructor(private fb: FormBuilder, private backendService: BackendService) { 
-    this.signupForm = this.fb.group({
-      email: new FormControl("", [
+  signupFailed = false;
+  signupForm: FormGroup = this.fb.group(
+    {
+      email: new FormControl(this.email, [
         Validators.required,
         Validators.minLength(4),
-        Validators.email
+        Validators.email,
       ]),
-      password: new FormControl("", [
+      password1: new FormControl(this.password1, [
         Validators.required,
-        Validators.minLength(4)
+        Validators.minLength(8),
       ]),
-      confirmPassword: new FormControl("", [
+      password2: new FormControl(this.password2, [
         Validators.required,
-        Validators.minLength(4)
+        Validators.minLength(8),
       ]),
-      company: new FormControl({ value: 'FH Technikum Wien', disabled: false }),
-      street: new FormControl("", [
-      ]),
-      city: new FormControl("", [
-      ]),
-      postalCode: new FormControl("", [
-        Validators.pattern('^[0-9]{4}$')
-      ])
-    }, { validators: this.mustMatch('password', 'confirmPassword') });
-  }
+      city: new FormControl('', Validators.required),
+      address: new FormControl('', Validators.required),
+      zipCode: new FormControl('', Validators.required),
+    },
+    { validators: this.passwordMatchValidator }
+  );
 
-  ngOnInit(): void { }
+  constructor(private fb: FormBuilder, private backendService: BackendService) { }
 
-  signup() : void {
+  ngOnInit(): void {}
+
+  signup() {
+    const emailControl = this.signupForm.get('email');
+    const password1Control = this.signupForm.get('password1');
+    const password2Control = this.signupForm.get('password2');
+   
+    if (
+      emailControl?.errors?.['required'] ||
+      password1Control?.errors?.['required'] ||
+      password2Control?.errors?.['required']
+    ) {
+      this.signupFailed = true;
+    } else {
+      this.signupFailed = false;
+    }
+
     if (this.signupForm.valid) {
       this.isLoading = true;
+      console.log('Signup successful.');
+      this.signupFailed = false;
+      console.log(this.form["email"].value);
+      console.log(this.form["address"].value);
+      console.log(this.form["zipCode"].value);
       this.backendService.signup(
         this.form["email"].value,
         this.form["password"].value,
         this.form["street"].value,
         this.form["city"].value,
-        this.form["postalCode"].value
-      )
+        this.form["zipCode"].value
+        )
+      
     } else {
-      console.log("Signup failed.");
+      console.log('Signup failed.');
+      this.signupFailed = true;
     }
   }
 
-  get form(): { [key: string]: AbstractControl; } {
+  get form(): { [key: string]: AbstractControl } {
     return this.signupForm.controls;
   }
 
-  mustMatch(controlName: string, matchingControlName: string): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const formGroup = control as FormGroup;
-      const formControl = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-
-      if (matchingControl.errors && !matchingControl.errors['mustMatch']) {
-        // return if another validator has already found an error on the matchingControl
-        return null;
-      }
-
-      // set error on matchingControl if validation fails
-      if (formControl.value !== matchingControl.value) {
-        matchingControl.setErrors({ mustMatch: true });
-        return { mustMatch: true };
-      } else {
-        matchingControl.setErrors(null);
-        return null;
-      }
-    };
+  get passwordMismatch(): boolean {
+    return this.signupForm.hasError('passwordMismatch');
   }
 }
