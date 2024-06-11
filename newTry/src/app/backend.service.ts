@@ -34,11 +34,14 @@ export class BackendService {
     return this.http.get<any[]>('http://localhost:3000/highscores', this.httpOptions);
   }
 
-  signup(email: string, password: string, street: string, city: string, zipCode: string) {
-    this.http.post<{ message: string }>('http://localhost:3000/users', { email, password, street, city, zipCode }, this.httpOptions)
+  signup(email: string, password: string, address: string, city: string, zipCode: string) {
+    this.http.post<{ Token: string }>('http://localhost:3000/users', { email, password, address, city, zipCode }, this.httpOptions)
       .subscribe(
         (response) => {
-          console.log(response.message);
+          console.log(response.Token);
+          localStorage.setItem('token', response.Token);
+          this.router.navigate(['/landing-page']);
+          console.log('Signup successful');
         },
         (error) => {
           console.error('Error during signup:', error);
@@ -46,8 +49,8 @@ export class BackendService {
       );
   }
 
-  sendHighscore(username: string, score: number) {
-    this.http.post<{ message: string }>('http://localhost:3000/highscores', {username, score }, this.httpOptions)
+  sendHighscore(username: string, highscore: number) {
+    this.http.post<{ message: string }>('http://localhost:3000/highscores', {username, highscore }, this.httpOptions)
       .subscribe(
         (response) => {
           console.log(response.message);

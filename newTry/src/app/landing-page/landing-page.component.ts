@@ -14,7 +14,7 @@ export class LandingPageComponent {
 
   constructor(private fb: FormBuilder, private backendService: BackendService) {
     this.highscoreForm = this.fb.group({
-      score: ['', Validators.required],
+      highscore: ['', Validators.required],
       username: ['', Validators.required]
     });
   }
@@ -34,9 +34,9 @@ export class LandingPageComponent {
 
   sendHighscore(): void {
     if (this.highscoreForm && this.highscoreForm.valid) { // Check if highscoreForm is not null
-      const score = this.highscoreForm.get('score')!.value; // Use non-null assertion operator
+      const highscore = this.highscoreForm.get('highscore')!.value; // Use non-null assertion operator
       const username = this.highscoreForm.get('username')!.value; // Use non-null assertion operator
-      this.backendService.sendHighscore(username, score);
+      this.backendService.sendHighscore(username, highscore);
     }
   }
 }

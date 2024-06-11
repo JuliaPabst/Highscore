@@ -37,6 +37,7 @@ export class SignupComponent {
   hide = true;
   isLoading = false;
   signupFailed = false;
+
   signupForm: FormGroup = this.fb.group(
     {
       email: new FormControl(this.email, [
@@ -52,12 +53,12 @@ export class SignupComponent {
         Validators.required,
         Validators.minLength(8),
       ]),
-      city: new FormControl("", [
-      ]),
-      address: new FormControl("", [
-      ]),
-      zipCode: new FormControl("", [Validators.pattern('^[0-9]{4}$')
-      ]),
+      company: new FormControl({ value: 'FH Technikum Wien', disabled: false }),
+      address: new FormControl("", Validators.required),
+      city: new FormControl("", Validators.required),
+      zipCode: new FormControl("", [
+        Validators.pattern('^[0-9]{4}$'), Validators.required
+      ])
     },
     { validators: this.passwordMatchValidator }
   );
@@ -75,21 +76,21 @@ export class SignupComponent {
       password2Control?.errors?.['required']
     ) {
       this.signupFailed = true;
-    } else {
-      this.signupFailed = false;
-    }
+    } 
 
     if (this.signupForm.valid) {
       this.isLoading = true;
-      console.log('Signup successful.');
       this.signupFailed = false;
+
+      console.log('Signup successful.');
       console.log(this.form["email"].value);
       console.log(this.form["address"].value);
       console.log(this.form["zipCode"].value);
+
       this.backendService.signup(
         this.form["email"].value,
-        this.form["password"].value,
-        this.form["street"].value,
+        this.form["password1"].value,
+        this.form["address"].value,
         this.form["city"].value,
         this.form["zipCode"].value
         )

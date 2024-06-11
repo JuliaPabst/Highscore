@@ -17,6 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
 import { SignupComponent } from './signup/signup.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { HighscoresComponent } from './highscores/highscores.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     LoginComponent,
     SignupComponent,
     LandingPageComponent,
+    HighscoresComponent,
   
   ],
   imports: [
