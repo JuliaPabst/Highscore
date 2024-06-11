@@ -1,0 +1,16 @@
+<form [formGroup]="highscoreForm" (ngSubmit)="sendHighscore()">
+    <mat-form-field appearance="fill">
+        <mat-label>Enter username</mat-label>
+        <input matInput type="text" formControlName="username"  />
+      </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Score</mat-label>
+      <input matInput type="number" formControlName="score">
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Send HighScore</button>
+  </form>
+
+  <button mat-raised-button color="primary" (click)="getHighScores()">Get Highscores</button>
+
+  
+  <button mat-raised-button color="primary" (click)="logout()">Logout</button>
